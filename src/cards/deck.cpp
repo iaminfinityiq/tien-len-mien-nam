@@ -1,5 +1,7 @@
 #include "deck.hpp"
-#include <random>
+#include "../helpers/random.hpp"
+
+using namespace helpers;
 
 namespace cards {
     Deck::Deck() {
@@ -26,22 +28,23 @@ namespace cards {
             CardValue::Two
         };
 
-        std::vector<Card> dummy = {};
         for (const CardType &type : this->types) {
             for (const CardValue &value : this->values) {
-                dummy.push_back(Card(type, value));
+                this->cards.push_back(Card(type, value));
             }
         }
 
-        std::random_device rd;
-        std::mt19937 gen(rd());
+        shuffle(this->cards);
+    }
 
-        while (!dummy.empty()) {
-            std::uniform_int_distribution<size_t> roll(0, dummy.size()-1);
-            size_t position = roll(gen);
+    void Deck::deal_cards(std::vector<Hand> &players) {
+        size_t player_idx = 0;
 
-            this->cards.push_back(dummy[position]);
-            dummy.erase(dummy.begin() + position);
+        while (!this->cards.empty()) {
+            players[player_idx++].receive_card(this->cards[0]);
+            player_idx %= players.size();
+
+            this->cards.erase(this->cards.begin());
         }
     }
 }
