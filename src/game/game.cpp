@@ -2,7 +2,6 @@
 #include "../cards/deck.hpp"
 #include "../helpers/random.hpp"
 #include <iostream>
-#include "../helpers/repr.hpp"
 
 using namespace helpers;
 
@@ -13,16 +12,26 @@ namespace game {
 
         Deck deck = Deck();
         deck.deal_cards(this->players);
+    }
 
-        std::cout << "STARTING HAND:\n";
-        for (const Hand &player : this->players) {
-            std::cout << player.name << "'s cards:\n";
-            size_t i = 1;
-            for (const Card &card : player.cards) {
-                std::cout << i++ << ". " << card_repr(card) << "\n";
+    size_t Game::discard_threes() {
+        size_t three_spades_guy = 1e18;
+        for (size_t i = 0; i < this->players.size(); i++) {
+            std::vector<Card> dummy = this->players[i].cards;
+            this->players[i].cards = {};
+            for (const Card &card : dummy) {
+                if (card.value == CardValue::Three) {
+                    if (card.type == CardType::Spades) {
+                        three_spades_guy = i;
+                    }
+
+                    continue;
+                }
+
+                this->players[i].receive_card(card);
             }
-
-            std::cout << "\n";
         }
+
+        return three_spades_guy;
     }
 }

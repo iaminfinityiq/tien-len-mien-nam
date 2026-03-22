@@ -5,6 +5,7 @@
 #include <vector>
 #include "game/hand.hpp"
 #include "game/game.hpp"
+#include "helpers/repr.hpp"
 
 using namespace helpers;
 using namespace game;
@@ -43,5 +44,28 @@ int main() {
 
     clear();
     Game g = Game(players);
+    std::cout << "STARTING HAND:\n";
+    for (const Hand &player : g.players) {
+        std::cout << player.name << "'s cards:\n";
+        size_t i = 1;
+        for (const Card &card : player.cards) {
+            std::cout << i++ << ". " << card_repr(card) << "\n";
+        }
+
+        std::cout << "\n";
+    }
+
+    std::cout << "AFTER DISCARDING THREES:\n";
+    for (const Hand &player : g.players) {
+        std::cout << player.name << "'s cards:\n";
+        size_t i = 1;
+        for (const Card &card : player.cards) {
+            std::cout << i++ << ". " << card_repr(card) << "\n";
+        }
+
+        std::cout << "\n";
+    }
+
+    std::cout << g.players[g.discard_threes()].name << " goes first" << "\n";
     return 0;
 }
