@@ -55,6 +55,8 @@ int main() {
         std::cout << "\n";
     }
 
+    size_t index = g.discard_threes();
+
     std::cout << "AFTER DISCARDING THREES:\n";
     for (const Hand &player : g.players) {
         std::cout << player.name << "'s cards:\n";
@@ -66,6 +68,6 @@ int main() {
         std::cout << "\n";
     }
 
-    std::cout << g.players[g.discard_threes()].name << " goes first" << "\n";
+    std::cout << g.players[index].name << " goes first" << "\n";
     return 0;
 }
