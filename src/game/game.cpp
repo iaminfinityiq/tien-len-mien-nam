@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include "../cards/deck.hpp"
 #include "../helpers/random.hpp"
-#include <iostream>
+#include <vector>
 
 using namespace helpers;
 
@@ -33,5 +33,24 @@ namespace game {
         }
 
         return three_spades_guy;
+    }
+
+    size_t Game::start_round(const size_t winner_idx) {
+        std::vector<size_t> remaining_players = {};
+        size_t idx = winner_idx;
+        size_t iter_count = 0;
+        while (iter_count < this->players.size()) {
+            if (this->players[idx].cards.empty()) {
+                idx++;
+                idx %= this->players.size();
+                iter_count++;
+                continue;
+            }
+
+            remaining_players.push_back(idx);
+            idx++;
+            idx %= this->players.size();
+            iter_count++;
+        }
     }
 }

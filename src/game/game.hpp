@@ -8,5 +8,6 @@ namespace game {
         
         Game(std::vector<Hand> &players);
         size_t discard_threes();
+        size_t start_round(const size_t winner_idx);
     };
 }
