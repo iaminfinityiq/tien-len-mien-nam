@@ -52,7 +52,7 @@ int main() {
         std::cout << player.name << ", you currently have " << player.cards.size() << " cards on your hand. Please take a look at them:\n";
         bool flag = false;
         for (size_t i = 0; i < player.cards.size(); i++) {
-            std::cout << i+1 << ". " << card_repr(player.cards[i]) << "\n";
+            std::cout << "[" << i+1 << "] " << card_repr(player.cards[i]) << "\n";
             if (player.cards[i].type == CardType::Spades && player.cards[i].value == CardValue::Three) {
                 flag = true;
             }
@@ -77,7 +77,7 @@ int main() {
         clear();
         std::cout << player.name << ", you currently have " << player.cards.size() << " cards on your hand. Please take a look at them:\n";
         for (size_t i = 0; i < player.cards.size(); i++) {
-            std::cout << i+1 << ". " << card_repr(player.cards[i]) << "\n";
+            std::cout << "[" << i+1 << "] " << card_repr(player.cards[i]) << "\n";
         }
 
         petc();
