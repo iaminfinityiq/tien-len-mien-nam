@@ -1,5 +1,6 @@
 #include "discard_pile.hpp"
 #include "set_detector.hpp"
+#include <algorithm>
 
 namespace cards {
     DiscardPile::DiscardPile() {
@@ -10,19 +11,15 @@ namespace cards {
         this->last_played = {};
     }
 
-    CardType find_highest_rank(const std::vector<Card> &cards) {
-        CardType returned = CardType::Spades;
-        for (const Card &card : cards) {
-            if (static_cast<size_t>(card.type) > static_cast<size_t>(returned)) {
-                returned = card.type;
-            }
+    bool compare_card(const Card a, const Card b) {
+        size_t a_value = static_cast<size_t>(a.value);
+        size_t b_value = static_cast<size_t>(b.value);
 
-            if (returned == CardType::Hearts) {
-                return returned;
-            }
+        if (a_value != b_value) {
+            return a_value < b_value;
         }
-        
-        return returned;
+
+        return static_cast<size_t>(a.type) < static_cast<size_t>(b.type);
     }
 
     bool DiscardPile::add_cards(const std::vector<Card> &cards) {
@@ -37,6 +34,8 @@ namespace cards {
         }
 
         SetType discard_set = detect_set(this->last_played);
+        std::sort(cards.begin(), cards.end(), compare_card);
+
         if (discard_set == SetType::Single) {
             if (set == SetType::ThreeConsecutivePairs || set == SetType::FourOfAKind || set == SetType::FourConsecutivePairs) {
                 this->last_played = cards;
@@ -73,18 +72,7 @@ namespace cards {
             }
 
             if (set == SetType::Pair) {
-                size_t your_value = static_cast<size_t>(cards[0].value);
-                size_t my_value = static_cast<size_t>(this->last_played[0].value);
-                if (your_value > my_value) {
-                    this->last_played = cards;
-                    return true;
-                }
-
-                if (your_value < my_value) {
-                    return false;
-                }
-
-                if (static_cast<size_t>(find_highest_rank(cards)) > static_cast<size_t>(find_highest_rank(this->last_played))) {
+                if (compare_card(*this->last_played.rbegin(), *cards.rbegin())) {
                     this->last_played = cards;
                     return true;
                 }
@@ -102,18 +90,7 @@ namespace cards {
             }
 
             if (set == SetType::Triple) {
-                size_t your_value = static_cast<size_t>(cards[0].value);
-                size_t my_value = static_cast<size_t>(this->last_played[0].value);
-                if (your_value > my_value) {
-                    this->last_played = cards;
-                    return true;
-                }
-
-                if (your_value < my_value) {
-                    return false;
-                }
-
-                if (static_cast<size_t>(find_highest_rank(cards)) > static_cast<size_t>(find_highest_rank(this->last_played))) {
+                if (compare_card(*this->last_played.rbegin(), *cards.rbegin())) {
                     this->last_played = cards;
                     return true;
                 }
@@ -129,6 +106,21 @@ namespace cards {
                 this->last_played = cards;
                 return true;
             }
+
+            if (set == SetType::Straight) {
+                if (cards.size() != this->last_played.size()) {
+                    return false;
+                }
+
+                if (compare_card(*this->last_played.rbegin(), *cards.rbegin())) {
+                    this->last_played = cards;
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
         }
 
         return false;
