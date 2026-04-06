@@ -12,7 +12,7 @@ A round starts with a person, specifically the one with the 3 of Spades starts t
 
 # Card rankings
 The "strength" of each card is defined in these 2 rules. We will assume that our 2 cards are `A` and `B` for the purpose:
-1. If `A` has a stronger rank than `B`, then `A` is a stronger rank than `B`
+1. If `A` has a stronger rank than `B`, then `A` is a stronger card than `B`
 2. If `A` and `B` both have the same rank, then if `A` has a stronger suit than `B` then `A` is a stronger card than `B`
 
 The order of strength of the parameters are as follows:
@@ -27,7 +27,7 @@ There are 7 kinds of card combinations you can play, which includes:
 4. Straight
 5. Four of a kind
 6. Three consecutive pairs
-7. Four consecutive pairs.
+7. Four consecutive pairs
 
 # Singles
 This only consists of a single card play. To beat this combination, either you have to play another single card that is stronger than the card given, or play a `four of a kind`, `three consecutive pairs`, or `four consecutive pairs`
@@ -40,3 +40,6 @@ This combination consists of 3 cards with the same rank. To beat this combinatio
 
 # Straights
 This combination consists of a list of cards with their ranks can be listed consecutively from their weakest rank to their strongest rank. For example: `5 6 7 8 9` is a straight that is 5 cards long. To beat this combination, either you play another straight with the same length that is stronger than the straight given, or play a `four of a kind`, `three consecutive pairs`, or `four consecutive pairs`. Straight `A` is stronger than straight `B` if the strongest card from `A` is stronger than the strongest card from `B`
+
+# Three consecutive pairs
+This combination consists of 3 pairs, in which each pair's rank can be listed consecutively from the weakest to the strongest. For example: `6 6 7 7 8 8` are three consecutive pairs. To beat this combination, either you play three consecutive pairs that are stronger than given, or play `four consecutive pairs`. A set of three consecutive pairs `A` is stronger than a set of three consecutive pairs `B` if the strongest card from `A` is stronger than the strongest card from `B`
