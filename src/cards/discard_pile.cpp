@@ -22,7 +22,7 @@ namespace cards {
         return static_cast<size_t>(a.type) < static_cast<size_t>(b.type);
     }
 
-    bool DiscardPile::add_cards(const std::vector<Card> &cards) {
+    bool DiscardPile::add_cards(std::vector<Card> &cards) {
         SetType set = detect_set(cards);
         if (set == SetType::None) {
             return false;
@@ -112,6 +112,55 @@ namespace cards {
                     return false;
                 }
 
+                if (compare_card(*this->last_played.rbegin(), *cards.rbegin())) {
+                    this->last_played = cards;
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
+        }
+
+        if (discard_set == SetType::ThreeConsecutivePairs) {
+            if (set == SetType::FourConsecutivePairs) {
+                this->last_played = cards;
+                return true;
+            }
+
+            if (set == SetType::ThreeConsecutivePairs) {
+                if (compare_card(*this->last_played.rbegin(), *cards.rbegin())) {
+                    this->last_played = cards;
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
+        }
+
+        if (discard_set == SetType::FourOfAKind) {
+            if (set == SetType::FourConsecutivePairs) {
+                this->last_played = cards;
+                return true;
+            }
+
+            if (set == SetType::FourOfAKind) {
+                if (compare_card(*this->last_played.rbegin(), *cards.rbegin())) {
+                    this->last_played = cards;
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
+        }
+
+        if (discard_set == SetType::FourConsecutivePairs) {
+            if (set == SetType::FourConsecutivePairs) {
                 if (compare_card(*this->last_played.rbegin(), *cards.rbegin())) {
                     this->last_played = cards;
                     return true;

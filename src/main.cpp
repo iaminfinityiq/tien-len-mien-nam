@@ -86,5 +86,20 @@ int main() {
     clear();
     std::cout << "Player " << g.players[go_first].name << " will play first.\n";
     petc();
+
+    while (true) {
+        go_first = g.start_round(go_first);
+        clear();
+
+        if (go_first == 1000000000000000000) {
+            clear();
+            std::cout << "The game has ended...\n";
+            return 0;
+        }
+
+        std::cout << g.players[go_first].name << " was the winner of the round, and will go first in the next round\n";
+        petc();
+    }
+
     return 0;
 }

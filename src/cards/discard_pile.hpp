@@ -4,11 +4,9 @@
 
 namespace cards {
     struct DiscardPile {
-    public:
+        std::vector<cards::Card> last_played;
         DiscardPile();
         void clear();
-        bool add_cards(const std::vector<cards::Card> &cards);
-    private:
-        std::vector<cards::Card> last_played;
+        bool add_cards(std::vector<cards::Card> &cards);
     };
 }

@@ -1,5 +1,6 @@
 #include "deck.hpp"
 #include "../helpers/random.hpp"
+#include <algorithm>
 
 using namespace helpers;
 
@@ -45,6 +46,19 @@ namespace cards {
             player_idx %= players.size();
 
             this->cards.erase(this->cards.begin());
+        }
+
+        for (Hand &player : players) {
+            std::sort(player.cards.begin(), player.cards.end(), [](Card a, Card b){
+                size_t a_value = static_cast<size_t>(a.value);
+                size_t b_value = static_cast<size_t>(b.value);
+
+                if (a_value != b_value) {
+                    return a_value < b_value;
+                }
+
+                return static_cast<size_t>(a.type) < static_cast<size_t>(b.type);
+            });
         }
     }
 }
